@@ -11,7 +11,10 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import com.kauailabs.navx.*;
+import com.kauailabs.navx.frc.AHRS;
 
 /**
  * This is a sample program that uses mecanum drive with a gyro sensor to
@@ -31,15 +34,16 @@ public class Robot extends IterativeRobot {
   private static final int kJoystickPort = 0;
 
   private MecanumDrive m_robotDrive;
-  private final AnalogGyro m_gyro = new AnalogGyro(kGyroPort);
+  
   private final Joystick m_joystick = new Joystick(kJoystickPort);
+  private AHRS navX;
 
   @Override
   public void robotInit() {
-    Spark frontLeft = new Spark(kFrontLeftChannel);
-    Spark rearLeft = new Spark(kRearLeftChannel);
-    Spark frontRight = new Spark(kFrontRightChannel);
-    Spark rearRight = new Spark(kRearRightChannel);
+    Talon frontLeft = new Talon(kFrontLeftChannel);
+    Talon rearLeft = new Talon(kRearLeftChannel);
+    Talon frontRight = new Talon(kFrontRightChannel);
+    Talon rearRight = new Talon(kRearRightChannel);
 
     // Invert the left side motors.
     // You may need to change or remove this to match your robot.
@@ -48,7 +52,7 @@ public class Robot extends IterativeRobot {
 
     m_robotDrive = new MecanumDrive(frontLeft, rearLeft, frontRight, rearRight);
 
-    m_gyro.setSensitivity(kVoltsPerDegreePerSecond);
+    
   }
 
   /**
@@ -57,6 +61,6 @@ public class Robot extends IterativeRobot {
   @Override
   public void teleopPeriodic() {
     m_robotDrive.driveCartesian(m_joystick.getX(), m_joystick.getY(),
-        m_joystick.getZ(), m_gyro.getAngle());
+        m_joystick.getZ(), navX.getAngle());
   }
 }
