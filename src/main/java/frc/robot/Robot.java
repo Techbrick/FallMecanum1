@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
@@ -24,7 +25,7 @@ import com.kauailabs.navx.frc.AHRS;
 public class Robot extends IterativeRobot {
   // gyro calibration constant, may need to be adjusted;
   // gyro value of 360 is set to correspond to one full revolution
-  private static final double kVoltsPerDegreePerSecond = 0.0128;
+  
 
   private static final int kFrontLeftChannel = 0;
   private static final int kRearLeftChannel = 1;
@@ -36,6 +37,7 @@ public class Robot extends IterativeRobot {
   private MecanumDrive m_robotDrive;
   
   private final Joystick m_joystick = new Joystick(kJoystickPort);
+  // set the gyro variable
   private AHRS navX;
 
   @Override
@@ -49,7 +51,9 @@ public class Robot extends IterativeRobot {
     // You may need to change or remove this to match your robot.
     frontLeft.setInverted(true);
     rearLeft.setInverted(true);
-
+    // init Gyro on the SPI port using the mxp interface on the rio
+    navX = new AHRS(SPI.Port.kMXP);
+    
     m_robotDrive = new MecanumDrive(frontLeft, rearLeft, frontRight, rearRight);
 
     
@@ -60,7 +64,16 @@ public class Robot extends IterativeRobot {
    */
   @Override
   public void teleopPeriodic() {
-    m_robotDrive.driveCartesian(m_joystick.getX(), m_joystick.getY(),
+    boolean gyroAlive = navX.isConnected();
+    if  (gyroAlive){
+      m_robotDrive.driveCartesian(m_joystick.getX(), m_joystick.getY(),
         m_joystick.getZ(), navX.getAngle());
+    }else {
+      //  if the navX is failed then avoid passing an unknown number to the drivetrain.
+      m_robotDrive.driveCartesian(m_joystick.getX(), m_joystick.getY(),
+        m_joystick.getZ(), 0);
+    }
+
+    
   }
 }
