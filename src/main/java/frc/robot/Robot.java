@@ -35,6 +35,9 @@ public class Robot extends IterativeRobot {
   private static final int kJoystickPort = 0;
 
   private MecanumDrive m_robotDrive;
+
+  private Encoder enc;
+  private final Compressor m_compressor = new Compressor(0);
   
   private final Joystick m_joystick = new Joystick(kJoystickPort);
   // set the gyro variable
@@ -56,6 +59,9 @@ public class Robot extends IterativeRobot {
     
     m_robotDrive = new MecanumDrive(frontLeft, rearLeft, frontRight, rearRight);
 
+    m_compressor.setClosedLoopControl(true);
+    enc = new Encoder(8, 9, false, Encoder.EncodingType.k4X);   // Sets pins for the encoder
+    enc.setMaxPeriod(1);  //Limits the period length of the encoder's rotation
     
   }
 
