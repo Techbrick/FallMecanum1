@@ -13,4 +13,5 @@ public class RobotMap {
     public static final int rightUltraSonic = 6;
     public static final int camera = 7;
     public static final int cylinder = 8;
+    
 }
