@@ -24,6 +24,8 @@ public class Robot extends IterativeRobot {
   // gyro calibration constant, may need to be adjusted;
   // gyro value of 360 is set to correspond to one full revolution
   
+  
+
   //init set port values
   private static final int kFrontLeftChannel = 0;
   private static final int kRearLeftChannel = 1;
@@ -31,7 +33,6 @@ public class Robot extends IterativeRobot {
   private static final int kRearRightChannel = 3;
   private static final int kGyroPort = 0;
   private static final int kJoystickPort = 0;
-
 
   //declare encoder
   private Encoder enc;
@@ -60,7 +61,7 @@ public class Robot extends IterativeRobot {
     // Sets pins for the encoder
     enc = new Encoder(8, 9, false, Encoder.EncodingType.k4X);   
     //Limits the period length of the encoder's rotation
-    enc.setMaxPeriod(1);  
+    enc.setMaxPeriod(1);
   }
 
   /*
