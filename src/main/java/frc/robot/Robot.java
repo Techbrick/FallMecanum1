@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Compressor;
 import com.kauailabs.navx.*;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -35,6 +37,8 @@ public class Robot extends IterativeRobot {
   private static final int kJoystickPort = 0;
 
   private MecanumDrive m_robotDrive;
+
+  private Encoder enc;
   
   private final Joystick m_joystick = new Joystick(kJoystickPort);
   // set the gyro variable
@@ -56,6 +60,8 @@ public class Robot extends IterativeRobot {
     
     m_robotDrive = new MecanumDrive(frontLeft, rearLeft, frontRight, rearRight);
 
+    enc = new Encoder(8, 9, false, Encoder.EncodingType.k4X);   // Sets pins for the encoder
+    enc.setMaxPeriod(1);  //Limits the period length of the encoder's rotation
     
   }
 
