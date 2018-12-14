@@ -22,6 +22,10 @@ public class CompressorSubsystem extends Subsystem {
             compressor.start();
         }
     }
+
+    public boolean pressure() {
+        return compressor.getPressureSwitchValue();
+    }
     
     public void actuateCylinder() {
         solenoid.set(true);
@@ -30,6 +34,7 @@ public class CompressorSubsystem extends Subsystem {
     public void retractCylinder() {
         solenoid.set(false);
     }
+
     @Override
     protected void initDefaultCommand() {
 

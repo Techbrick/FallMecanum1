@@ -8,7 +8,7 @@ import frc.robot.RobotMap;
 public class ArmSubsystem extends Subsystem {
     private final Compressor m_compressor;
     public ArmSubsystem(Robot robot){
-        m_compressor = new Compressor(RobotMap.cylinder);
+        m_compressor = new Compressor(RobotMap.solenoid);
         m_compressor.setClosedLoopControl(true);
     }
 
