@@ -1,36 +1,37 @@
 package frc.robot.commands;
-import RobotMap;
-public ArmCommand extends Command{
-    public Encoder enc;
-    public ArmSubsystem arm;
-    public int degrees = 120;
-    public int ticksPerDegree = RobotMap.ticksPerDegree;
-    public int ticks;
-    public Talon motor;
-    public ArmCommand(Robot r) {
-        enc = r.encode;
-        arm = r.ArmSubsystem;
-        motor = r.motor; // i assume that a motor will be set in robot class?
 
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
+import frc.robot.subsystems.ArmSubsystem;
+
+public class ArmCommand extends Command{
+    private ArmSubsystem arm;
+    private int degrees;
+    public ArmCommand(Robot r, int d) {
+        arm = r.armSubsystem;
+        degrees = d;
     }
     /*
     public rotate(double degrees) {
 
     }
     */
-    @override
-    public void init() {
-        enc.reset();
-    } 
-    public void execute() {
-        motor.rotate(.5);
-        ticks = enc.get();
-    }   
-    public boolean isfinished(){
-        return ticks >= degrees * ticksPerDegree;
+    @Override
+    public void initialize() {
+        arm.resetEncoder();
     }
+
+    @Override
+    public void execute() {
+        arm.setTalon(1);
+    }
+    @Override   
+    public boolean isFinished(){
+        return arm.getEncoderAngle() >= degrees;
+    }
+    @Override
     public void end() {
-        motor.rotate(0);
+        arm.setTalon(0);
     } 
     /* init - get degrees
         execute rotate motor 

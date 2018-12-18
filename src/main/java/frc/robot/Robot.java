@@ -45,6 +45,7 @@ public class Robot extends IterativeRobot {
   //subsystems declaration
   public DriveSubsystem driveSubsystem;
   public CompressorSubsystem compressorSubsystem;
+  public ArmSubsystem armSubsystem;
   /*
    * Initialize bot 
    * TO DO:
@@ -57,6 +58,7 @@ public class Robot extends IterativeRobot {
     //subsystems init
     driveSubsystem = new DriveSubsystem();
     compressorSubsystem = new CompressorSubsystem(this);
+    armSubsystem = new ArmSubsystem();
     // init Gyro on the SPI port using the mxp interface on the rio
     navX = new AHRS(SPI.Port.kMXP);
     // Sets pins for the encoder

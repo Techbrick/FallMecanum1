@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
 
 public class CompressorSubsystem extends Subsystem {
     private final Compressor compressor;
