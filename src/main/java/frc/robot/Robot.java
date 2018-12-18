@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj.Encoder;
 import com.kauailabs.navx.frc.AHRS;
@@ -42,9 +43,8 @@ public class Robot extends IterativeRobot {
   private AHRS navX;
 
   //subsystems declaration
-  private ArmSubsystem armSubsystem;
-  private DriveSubsystem driveSubsystem;
-  
+  public DriveSubsystem driveSubsystem;
+  public CompressorSubsystem compressorSubsystem;
   /*
    * Initialize bot 
    * TO DO:
@@ -56,6 +56,7 @@ public class Robot extends IterativeRobot {
   public void robotInit() {
     //subsystems init
     driveSubsystem = new DriveSubsystem();
+    compressorSubsystem = new CompressorSubsystem(this);
     // init Gyro on the SPI port using the mxp interface on the rio
     navX = new AHRS(SPI.Port.kMXP);
     // Sets pins for the encoder

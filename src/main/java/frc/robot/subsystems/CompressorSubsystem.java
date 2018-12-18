@@ -1,19 +1,38 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class CompressorSubsystem extends Subsystem {
-    private final Compressor m_compressor;
+    private final Compressor compressor;
+    private Solenoid solenoid;
     public CompressorSubsystem(Robot robot){
-        m_compressor = new Compressor(RobotMap.cylinder);
-        m_compressor.setClosedLoopControl(true);
+        compressor = new Compressor();
+        compressor.setClosedLoopControl(true);
+        solenoid = new Solenoid(0);
     }
 
-    public void actuateCylinder() {
+    public void checkPressure() {
+        if(!compressor.getPressureSwitchValue()) {
+            compressor.stop();
+        } else {
+            compressor.start();
+        }
+    }
 
+    public boolean pressure() {
+        return compressor.getPressureSwitchValue();
+    }
+    
+    public void actuateCylinder() {
+        solenoid.set(true);
+    }
+
+    public void retractCylinder() {
+        solenoid.set(false);
     }
 
     @Override
