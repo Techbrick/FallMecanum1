@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -46,6 +47,8 @@ public class Robot extends IterativeRobot {
   public DriveSubsystem driveSubsystem;
   public CompressorSubsystem compressorSubsystem;
   public ArmSubsystem armSubsystem;
+
+  public OI oI;
   /*
    * Initialize bot 
    * TO DO:
@@ -56,6 +59,7 @@ public class Robot extends IterativeRobot {
   @Override
   public void robotInit() {
     //subsystems init
+    oI = new OI(this);
     driveSubsystem = new DriveSubsystem();
     compressorSubsystem = new CompressorSubsystem(this);
     armSubsystem = new ArmSubsystem();
@@ -65,6 +69,7 @@ public class Robot extends IterativeRobot {
     enc = new Encoder(8, 9, false, Encoder.EncodingType.k4X);   
     //Limits the period length of the encoder's rotation
     enc.setMaxPeriod(1);
+
   }
 
   /*

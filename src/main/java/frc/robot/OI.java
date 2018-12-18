@@ -8,8 +8,10 @@ public class OI
 {
     Joystick joystick = new Joystick(0);
     Button rotat = new JoystickButton(joystick, 5);
+    Button push = new JoystickButton(joystick, 6);
     public OI(Robot r)
     {
-        rotat.whenPressed(new ArmCommand(r.armSubsystem, 120));
+        rotat.whenPressed(new ArmCommand(r, 120));
+        push.whenPressed(new Push(r));
     }
 }
