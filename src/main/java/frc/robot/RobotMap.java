@@ -13,6 +13,6 @@ public class RobotMap {
     public static final int rightUltraSonic = 6;
     public static final int camera = 7;
     public static final int cylinder = 8;
-
     public static final int ticksPerDegree = 4098;
+    public static final int solenoid = 0;
 }

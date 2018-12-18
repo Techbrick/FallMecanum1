@@ -7,16 +7,13 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.CompressorSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Compressor;
-import com.kauailabs.navx.*;
 import com.kauailabs.navx.frc.AHRS;
 
 /**
@@ -28,7 +25,9 @@ public class Robot extends IterativeRobot {
   // gyro calibration constant, may need to be adjusted;
   // gyro value of 360 is set to correspond to one full revolution
   
+  
 
+  //init set port values
   private static final int kFrontLeftChannel = 0;
   private static final int kRearLeftChannel = 1;
   private static final int kFrontRightChannel = 2;
@@ -36,50 +35,62 @@ public class Robot extends IterativeRobot {
   private static final int kGyroPort = 0;
   private static final int kJoystickPort = 0;
 
-  private MecanumDrive m_robotDrive;
-
+  //declare encoder
   private Encoder enc;
-  
+  //declare/init joystick pulling port from listing
   private final Joystick m_joystick = new Joystick(kJoystickPort);
-  // set the gyro variable
+  //declare the gyro variable
   private AHRS navX;
 
+  //subsystems declaration
+  public DriveSubsystem driveSubsystem;
+  public CompressorSubsystem compressorSubsystem;
+  /*
+   * Initialize bot 
+   * TO DO:
+   * [?] Drive
+   * [-] Hand
+   * [-] Pnuematics
+   */
   @Override
   public void robotInit() {
-    Talon frontLeft = new Talon(kFrontLeftChannel);
-    Talon rearLeft = new Talon(kRearLeftChannel);
-    Talon frontRight = new Talon(kFrontRightChannel);
-    Talon rearRight = new Talon(kRearRightChannel);
-
-    // Invert the left side motors.
-    // You may need to change or remove this to match your robot.
-    frontLeft.setInverted(true);
-    rearLeft.setInverted(true);
+    //subsystems init
+    driveSubsystem = new DriveSubsystem();
+    compressorSubsystem = new CompressorSubsystem(this);
     // init Gyro on the SPI port using the mxp interface on the rio
     navX = new AHRS(SPI.Port.kMXP);
-    
-    m_robotDrive = new MecanumDrive(frontLeft, rearLeft, frontRight, rearRight);
-
-    enc = new Encoder(8, 9, false, Encoder.EncodingType.k4X);   // Sets pins for the encoder
-    enc.setMaxPeriod(1);  //Limits the period length of the encoder's rotation
-    
+    // Sets pins for the encoder
+    enc = new Encoder(8, 9, false, Encoder.EncodingType.k4X);   
+    //Limits the period length of the encoder's rotation
+    enc.setMaxPeriod(1);
   }
 
-  /**
+  /*
+   *Auto Init/Drive
+   * TO DO:
+   * [-] All of it
+   */
+  @Override
+  public void autonomousInit() {
+    super.autonomousInit();
+  }
+
+  @Override
+  public void autonomousPeriodic() {
+    super.autonomousPeriodic();
+  }
+
+  /*
    * Mecanum drive is used with the gyro angle as an input.
    */
   @Override
   public void teleopPeriodic() {
     boolean gyroAlive = navX.isConnected();
     if  (gyroAlive){
-      m_robotDrive.driveCartesian(m_joystick.getX(), m_joystick.getY(),
-        m_joystick.getZ(), navX.getAngle());
+      driveSubsystem.DriveCartesian(m_joystick.getX(), m_joystick.getY(), m_joystick.getZ(), navX.getAngle());
     }else {
       //  if the navX is failed then avoid passing an unknown number to the drivetrain.
-      m_robotDrive.driveCartesian(m_joystick.getX(), m_joystick.getY(),
-        m_joystick.getZ(), 0);
+      driveSubsystem.DriveCartesian(m_joystick.getX(), m_joystick.getY(), m_joystick.getZ(), 0);
     }
-
-    
   }
 }
