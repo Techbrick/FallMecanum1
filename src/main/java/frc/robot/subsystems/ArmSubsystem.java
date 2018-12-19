@@ -10,11 +10,12 @@ import com.ctre.phoenix.motorcontrol.can.*;
 public class ArmSubsystem extends Subsystem {
     private TalonSRX talon;
     private Encoder encoder;
-    private int ticksPerRevolution;
+
+    private int ticksPerRevolution = 4096;
     public ArmSubsystem()
     {
         encoder = new Encoder(8, 9, false, Encoder.EncodingType.k4X);  
-        talon = new TalonSRX(0); 
+        talon = new TalonSRX(42); 
     }
 
     public void resetEncoder()
@@ -25,6 +26,11 @@ public class ArmSubsystem extends Subsystem {
     public float getEncoderAngle()
     {
         return encoder.get() * 360 / ticksPerRevolution;
+    }
+
+    public int getEncoderTicks()
+    {
+        return encoder.get();
     }
 
     public void setTalon(float percentPower)

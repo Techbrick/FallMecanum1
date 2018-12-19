@@ -10,7 +10,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.CameraServer;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CompressorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -42,6 +44,7 @@ public class Robot extends IterativeRobot {
   private final Joystick m_joystick = new Joystick(kJoystickPort);
   //declare the gyro variable
   private AHRS navX;
+  private Ultrasonic frontUltrasonic, rightUltrasonic1, rightUltrasonic2;
 
   //subsystems declaration
   public DriveSubsystem driveSubsystem;
@@ -59,17 +62,20 @@ public class Robot extends IterativeRobot {
   @Override
   public void robotInit() {
     //subsystems init
-    oI = new OI(this);
     driveSubsystem = new DriveSubsystem();
     compressorSubsystem = new CompressorSubsystem(this);
     armSubsystem = new ArmSubsystem();
-    // init Gyro on the SPI port using the mxp interface on the rio
+    // init Gyro on the SPI port using the mxp interface on thez rio
     navX = new AHRS(SPI.Port.kMXP);
     // Sets pins for the encoder
-    enc = new Encoder(8, 9, false, Encoder.EncodingType.k4X);   
+    //enc = new Encoder(8, 9, false, Encoder.EncodingType.k4X);   
     //Limits the period length of the encoder's rotation
-    enc.setMaxPeriod(1);
-
+    //enc.setMaxPeriod(1);
+    frontUltrasonic = new Ultrasonic(7, 6);
+    rightUltrasonic1 = new Ultrasonic(5, 4);
+    rightUltrasonic2 = new Ultrasonic(3, 2);
+    CameraServer.getInstance().startAutomaticCapture();
+    oI = new OI(this);
   }
 
   /*
@@ -99,5 +105,9 @@ public class Robot extends IterativeRobot {
       //  if the navX is failed then avoid passing an unknown number to the drivetrain.
       driveSubsystem.DriveCartesian(m_joystick.getX(), m_joystick.getY(), m_joystick.getZ(), 0);
     }
+    SmartDashboard.putNumber("Front Ultrasonic", frontUltrasonic.getRangeInches());
+    SmartDashboard.putNumber("Right Ultrasonic Forward", rightUltrasonic1.getRangeInches());
+    SmartDashboard.putNumber("Right Ultrasonic Aft", rightUltrasonic2.getRangeInches());
+    SmartDashboard.putNumber("Encoder", armSubsystem.getEncoderTicks());
   }
 }
